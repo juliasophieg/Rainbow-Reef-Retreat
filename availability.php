@@ -1,49 +1,57 @@
 <?php
-/*$database = new PDO('sqlite:hotel.db');
 
-$statement = $database->query('SELECT * FROM Rooms');
+declare(strict_types=1);
 
-$rooms = $statement->fetchAll(PDO::FETCH_ASSOC);
-echo $rooms[1]['room_name'];*/
-
-include_once __DIR__ . '/hotelFunctions.php';
+require_once __DIR__ . '/hotelFunctions.php';
 
 $db = connect('hotel.db');
-?>
 
+//Check which rooms that are available on selected dates
+if (isset($_POST['availability'])) {
+    $checkIn = $_POST['checkin'];
+    $checkOut = $_POST['checkout'];
 
-<!DOCTYPE html>
-<html lang="en">
+    $statement = $db->query("SELECT *
+        FROM Rooms
+        INNER JOIN Reservations ON Rooms.id = Reservations.room_id
+        WHERE Reservations.arrival_date IS NOT '$checkIn'");
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-
-<body>
-    <form class="dates" action="/availability.php" method="post">
-        <label for="checkin">Check in:</label>
-        <input type="date" id="checkin" name="checkin" min="2024-01-01" max="2024-01-31">
-        <label for="checkout">Check out:</label>
-        <input type="date" id="checkout" name="checkout" min="2024-01-01" max="2024-01-31">
-
-        <input type="submit" id="availability" name="availability" value="Check availability">
-    </form>
-
-    <?php
-    //Check which rooms are available on selected dates
-    $statement = $db->query('SELECT * FROM Rooms');
     $rooms = $statement->fetchAll(PDO::FETCH_ASSOC);
 
-    if (isset($_POST['availability'])) {
-        echo "These rooms are available:";
-    } else {
-        foreach ($rooms as $room) {
-            echo $room['room_name'] . ", $" . $room['price_per_day'] . " per day";
-            echo "<br>";
-        };
-    } ?>
-</body>
+    foreach ($rooms as $room) : ?>
+        <a href="room.php?room_id=<?php echo $room['id']; ?>">
+            <div class="room-card">
+                <img src="<?php echo $room['img_src'] ?>" style="width:100%">
+                <div class="room-card-text">
+                    <div class="room-title">
+                        <h3><?php echo $room['room_name'] ?></h3>
+                        <h3>$<?php echo $room['price_per_day'] ?></h3>
+                    </div>
+                    <p><?php echo ucfirst($room['room_type']) ?></p>
+                </div>
+            </div>
+        </a>
 
-</html>
+    <?php endforeach;
+} else {
+    $statement = $db->query("SELECT * FROM Rooms");
+
+    $rooms = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+    foreach ($rooms as $room) : ?>
+        <a href="room.php?room_id=<?php echo $room['id']; ?>">
+            <div class="room-card">
+                <img src="<?php echo $room['img_src'] ?>" style="width:100%">
+                <div class="room-card-text">
+                    <div class="room-title">
+                        <h3><?php echo $room['room_name'] ?></h3>
+                        <h3>$<?php echo $room['price_per_day'] ?></h3>
+                    </div>
+                    <p><?php echo ucfirst($room['room_type']) ?></p>
+                </div>
+            </div>
+        </a>
+
+<?php endforeach;
+}
+?>

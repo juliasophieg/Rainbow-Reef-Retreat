@@ -1,6 +1,15 @@
+:root {
+  --text-color: #2e2e2e;
+}
+
+* {
+  box-sizing: border-box;
+}
+
 body {
   font-family: 'roboto';
   background-color: rgb(127, 225, 255);
+  color: var(--text-color);
 }
 
 main {
@@ -41,14 +50,14 @@ h4 {
 .rooms-wrapper {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: flex-start;
   margin-top: 30px;
-  gap: 30px;
+  gap: 60px;
   width: 100%;
 }
 
 .room-card {
-  width: 300px;
+  width: 250px;
   border-radius: 15px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   transition: 0.3s;
@@ -56,6 +65,12 @@ h4 {
 
 .room-card:hover {
   transform: scale(1.05);
+  cursor: pointer;
+}
+
+a {
+  color: var(--text-color);
+  text-decoration: none;
 }
 
 .room-card img {
@@ -63,7 +78,7 @@ h4 {
 }
 
 .room-card-text {
-  padding: 0px 20px;
+  padding: 0px 20px 10px 20px;
 }
 
 .room-title {

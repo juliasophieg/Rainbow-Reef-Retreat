@@ -21,37 +21,9 @@
 
             <input type="submit" id="availability" name="availability" value="Check availability">
         </form>
+        <!-- IF NO DATES ARE PICKED, ALL ROOMS SHOW. IF DATE IS PICKED ONLY AVAILABLE ROOMS SHOW -->
         <div class="rooms-wrapper">
-            <div class="room-card">
-                <img src="/assets/images/lagoonloft.jpeg" style="width:100%">
-                <div class="room-card-text">
-                    <div class="room-title">
-                        <h3>Lagoon Loft</h3>
-                        <h3>$8</h3>
-                    </div>
-                    <p>Single room</p>
-                </div>
-            </div>
-            <div class="room-card">
-                <img src="/assets/images/turtleterrace.jpeg" style="width:100%">
-                <div class="room-card-text">
-                    <div class="room-title">
-                        <h3>Turtle Terrace</h3>
-                        <h3>$12</h3>
-                    </div>
-                    <p>Double room</p>
-                </div>
-            </div>
-            <div class="room-card">
-                <img src="/assets/images/coralsuite.jpeg" style="width:100%">
-                <div class="room-card-text">
-                    <div class="room-title">
-                        <h3>Coral Suite</h3>
-                        <h3>$16</h3>
-                    </div>
-                    <p>Suite</p>
-                </div>
-            </div>
+            <?php require_once __DIR__ . '/availability.php'; ?>
         </div>
 
     </main>

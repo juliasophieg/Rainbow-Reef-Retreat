@@ -1,3 +1,10 @@
+<?php
+
+require_once __DIR__ . '/hotelFunctions.php';
+
+$db = connect('hotel.db');
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,18 +16,35 @@
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&family=Roboto:ital,wght@0,400;0,700;0,900;1,400&display=swap" rel="stylesheet">
 </head>
 
-
-
 <body>
     <main>
 
-        <form class="book" action="/" method="post">
-            <div class="rooms">
-                <p>Available rooms:</p>
-                <button>Room 1</button>
-                <button>Room 2</button>
-                <button>Room 3</button>
+
+        <!-- PRESENT INFORMATION ABOUT CHOSEN ROOM -->
+
+        <?php
+
+        //Check which rooms that are available on selected dates
+        $roomID = $_GET['room_id'];
+
+        $statement = $db->query("SELECT * FROM Rooms WHERE id = '$roomID'");
+
+        $room = $statement->fetchAll(PDO::FETCH_ASSOC); ?>
+
+        <div class="room-card">
+            <img src="<?php echo $room[0]['img_src'] ?>" style="width:100%">
+            <div class="room-card-text">
+                <div class="room-title">
+                    <h3><?php echo $room[0]['room_name'] ?></h3>
+                    <h3>$<?php echo $room[0]['price_per_day'] ?></h3>
+                </div>
+                <p><?php echo ucfirst($room[0]['room_type']) ?></p>
             </div>
+        </div>
+
+        <!-- FORM FOR BOOKING -->
+
+        <form class="book" action="/" method="post">
             <h4>Name</h4>
             <div class="touristname">
                 <input type="text" id="firstname" name="firstname" placeholder="First name">
