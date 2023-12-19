@@ -19,7 +19,7 @@ if (isset($_POST['availability'])) {
     $rooms = $statement->fetchAll(PDO::FETCH_ASSOC);
 
     foreach ($rooms as $room) : ?>
-        <a href="room.php?room_id=<?php echo $room['id']; ?>">
+        <a href="room.php?room_id=<?php echo $room['id']; ?>&checkin=<?php echo $checkIn; ?>&checkout=<?php echo $checkOut; ?>">
             <div class="room-card">
                 <img src="<?php echo $room['img_src'] ?>" style="width:100%">
                 <div class="room-card-text">

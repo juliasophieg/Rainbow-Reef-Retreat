@@ -23,8 +23,10 @@ $db = connect('hotel.db');
         <!-- PRESENT INFORMATION ABOUT CHOSEN ROOM -->
 
         <?php
+        if (isset($_GET['checkin']) && isset($_GET['checkout'])) {
+            echo "Arrival date: " . $_GET['checkin'] . "  |  Departure date: " . $_GET['checkout'];
+        }
 
-        //Check which rooms that are available on selected dates
         $roomID = $_GET['room_id'];
 
         $statement = $db->query("SELECT * FROM Rooms WHERE id = '$roomID'");
@@ -44,20 +46,32 @@ $db = connect('hotel.db');
 
         <!-- FORM FOR BOOKING -->
 
+
         <form class="book" action="/" method="post">
             <h4>Name</h4>
-            <div class="touristname">
-                <input type="text" id="firstname" name="firstname" placeholder="First name">
-                <input type="text" id="lastname" name="lastname" placeholder="Last name">
+            <div class="guesttname">
+                <input type="text" id="fullname" name="fullname" placeholder="Full name">
             </div>
             <h4>Contact information</h4>
-            <div class="touristcontact">
+            <div class="guestcontact">
                 <input type="text" id="email" name="email" placeholder="E-mail">
-                <input type="text" id="phone" name="phone" placeholder="Phone number">
+            </div>
+            <h4>Activity</h4>
+            <div class="guestfeature">
+                <select name="features" id="features">
+                    <option value="">No acitivity chosen</option>
+                    <?php
+                    $statement = $db->query("SELECT * FROM Features");
+                    $features = $statement->fetchAll(PDO::FETCH_ASSOC);
+                    foreach ($features as $feature) { ?>
+                        <option value="<?php echo $feature['id'] ?>"><?php echo $feature['feature_name'] ?></option>
+                    <?php } ?>
+                </select>
             </div>
             <h4>Confirmation</h4>
             <div class="confirmation">
                 <input type="text" id="transfercode" name="transfercode" placeholder="Transfer code">
+
 
                 <input type="submit" id="bookroom" name="bookroom" value="Book room">
             </div>

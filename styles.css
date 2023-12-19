@@ -1,5 +1,7 @@
 :root {
   --text-color: #2e2e2e;
+  --coral: #ff9cba;
+  --water: #6ac9de;
 }
 
 * {
@@ -21,6 +23,8 @@ main {
   border-radius: 15px;
 }
 
+/* FIRST PAGE */
+
 .message {
   width: 450px;
   border-radius: 10px;
@@ -30,21 +34,9 @@ main {
   padding: 5px 20px;
 }
 
-.book {
-  display: flex;
-  flex-direction: column;
-}
-
 h4 {
   margin: 10px 0px;
   font-weight: 700;
-}
-
-.touristname,
-.touristcontact,
-.confirmation {
-  display: flex;
-  gap: 10px;
 }
 
 .rooms-wrapper {
@@ -84,4 +76,13 @@ a {
 .room-title {
   display: flex;
   justify-content: space-between;
+}
+
+/* ROOM PAGE */
+
+.guestname,
+.guesttcontact,
+.confirmation {
+  display: flex;
+  gap: 10px;
 }
