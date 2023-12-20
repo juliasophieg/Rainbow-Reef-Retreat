@@ -1,23 +1,27 @@
 <?php
 
 declare(strict_types=1);
-
+session_start();
 require_once __DIR__ . '/hotelFunctions.php';
-
 $db = connect('hotel.db');
 
-//Check which rooms that are available on selected dates
+//If "Check Availability" is pressed
 if (isset($_POST['availability'])) {
-    $checkIn = $_POST['checkin'];
-    $checkOut = $_POST['checkout'];
 
-    $statement = $db->query("SELECT *
-        FROM Rooms
-        INNER JOIN Reservations ON Rooms.id = Reservations.room_id
-        WHERE Reservations.arrival_date IS NOT '$checkIn'");
+    //Store picked dates in session variables
+    $_SESSION['checkin'] = $_POST['checkin'];
+    $_SESSION['checkout'] = $_POST['checkout'];
+
+    $checkIn = $_SESSION['checkin'];
+    $checkOut = $_SESSION['checkout'];
+
+
+    //Check which rooms are available
+    $statement = $db->query("SELECT * FROM Rooms");
 
     $rooms = $statement->fetchAll(PDO::FETCH_ASSOC);
 
+    //Generate room cards for available rooms
     foreach ($rooms as $room) : ?>
         <a href="room.php?room_id=<?php echo $room['id']; ?>&checkin=<?php echo $checkIn; ?>&checkout=<?php echo $checkOut; ?>">
             <div class="room-card">
@@ -34,10 +38,12 @@ if (isset($_POST['availability'])) {
 
     <?php endforeach;
 } else {
+    //Show all rooms if no dates are picked
     $statement = $db->query("SELECT * FROM Rooms");
 
     $rooms = $statement->fetchAll(PDO::FETCH_ASSOC);
 
+    //Generate room cards
     foreach ($rooms as $room) : ?>
         <a href="room.php?room_id=<?php echo $room['id']; ?>">
             <div class="room-card">

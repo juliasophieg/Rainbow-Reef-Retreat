@@ -21,7 +21,7 @@
 
             <input type="submit" id="availability" name="availability" value="Check availability">
         </form>
-        <!-- IF NO DATES ARE PICKED, ALL ROOMS SHOW. IF DATE IS PICKED ONLY AVAILABLE ROOMS SHOW -->
+        <!-- IF NO DATES ARE PICKED, ALL ROOMS SHOW. IF DATES ARE PICKED ONLY AVAILABLE ROOMS SHOW -->
         <div class="rooms-wrapper">
             <?php require_once __DIR__ . '/availability.php'; ?>
         </div>

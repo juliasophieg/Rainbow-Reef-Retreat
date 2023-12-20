@@ -1,6 +1,7 @@
 <?php
-
+session_start();
 require_once __DIR__ . '/hotelFunctions.php';
+require_once __DIR__ . '/rooms.php';
 
 $db = connect('hotel.db');
 ?>
@@ -23,31 +24,28 @@ $db = connect('hotel.db');
         <!-- PRESENT INFORMATION ABOUT CHOSEN ROOM -->
 
         <?php
-        if (isset($_GET['checkin']) && isset($_GET['checkout'])) {
-            echo "Arrival date: " . $_GET['checkin'] . "  |  Departure date: " . $_GET['checkout'];
+        //Selected dates
+        if (isset($_SESSION['checkin'])) {
+            $checkIn = $_SESSION['checkin'];
+            $checkOut = $_SESSION['checkout'];
+            echo "Arrival date: " . $checkIn . "  |  Departure date: " . $checkOut;
         }
 
-        $roomID = $_GET['room_id'];
+        //Get the chosen room's id
+        $roomID = (int) $_GET['room_id'];
 
-        $statement = $db->query("SELECT * FROM Rooms WHERE id = '$roomID'");
+        //Get info about chosen room from the rooms array
+        foreach ($roomInfo as $rooms) {
+            if ($rooms['id'] === $roomID) {
+                echo $rooms['name'];
+            }
+        } ?>
 
-        $room = $statement->fetchAll(PDO::FETCH_ASSOC); ?>
-
-        <div class="room-card">
-            <img src="<?php echo $room[0]['img_src'] ?>" style="width:100%">
-            <div class="room-card-text">
-                <div class="room-title">
-                    <h3><?php echo $room[0]['room_name'] ?></h3>
-                    <h3>$<?php echo $room[0]['price_per_day'] ?></h3>
-                </div>
-                <p><?php echo ucfirst($room[0]['room_type']) ?></p>
-            </div>
-        </div>
 
         <!-- FORM FOR BOOKING -->
 
 
-        <form class="book" action="/" method="post">
+        <form class="book" action="booking.php?room_id=<?php echo $roomID; ?>&checkin=<?php echo $checkIn; ?>&checkout=<?php echo $checkOut; ?>" method="post">
             <h4>Name</h4>
             <div class="guesttname">
                 <input type="text" id="fullname" name="fullname" placeholder="Full name">
@@ -61,6 +59,7 @@ $db = connect('hotel.db');
                 <select name="features" id="features">
                     <option value="">No acitivity chosen</option>
                     <?php
+                    //Generate list of features
                     $statement = $db->query("SELECT * FROM Features");
                     $features = $statement->fetchAll(PDO::FETCH_ASSOC);
                     foreach ($features as $feature) { ?>
@@ -70,12 +69,10 @@ $db = connect('hotel.db');
             </div>
             <h4>Confirmation</h4>
             <div class="confirmation">
-                <input type="text" id="transfercode" name="transfercode" placeholder="Transfer code">
+                <input type="text" id="transfercode" name="transfer_code" placeholder="Transfer code">
 
-
-                <input type="submit" id="bookroom" name="bookroom" value="Book room">
+                <input type="submit" id="book_room" name="book_room" value="Book room">
             </div>
-
         </form>
 
     </main>
