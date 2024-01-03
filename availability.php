@@ -17,9 +17,11 @@ if (isset($_POST['availability'])) {
 
 
     //Check which rooms are available
+    // Retrieve available rooms
     $statement = $db->query("SELECT * FROM Rooms");
 
     $rooms = $statement->fetchAll(PDO::FETCH_ASSOC);
+
 
     //Generate room cards for available rooms
     foreach ($rooms as $room) : ?>

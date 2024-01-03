@@ -9,10 +9,20 @@
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&family=Roboto:ital,wght@0,400;0,700;0,900;1,400&display=swap" rel="stylesheet">
 </head>
 
-<!--CHECK ROOM AVAILABILITY -->
+
 
 <body>
+    <header>
+        <div class="logo"></div>
+        <nav>
+            <a href="/">The Island</a>
+            <a href="/">The Hotel</a>
+            <a href="/">Activities</a>
+            <a href="/">Contact</a>
+        </nav>
+    </header>
     <main>
+        <!--CHECK ROOM AVAILABILITY -->
         <form class="dates" action="/" method="post">
             <label for="checkin">Check in:</label>
             <input type="date" id="checkin" name="checkin" min="2024-01-01" max="2024-01-31">

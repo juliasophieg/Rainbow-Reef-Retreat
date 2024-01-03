@@ -22,13 +22,21 @@ $db = connect('hotel.db');
 
 
         <!-- PRESENT INFORMATION ABOUT CHOSEN ROOM -->
+        <form class="dates" action="/" method="post">
+            <label for="checkin">Check in:</label>
+            <input type="date" id="checkin" name="checkin" min="2024-01-01" max="2024-01-31">
+            <label for="checkout">Check out:</label>
+            <input type="date" id="checkout" name="checkout" min="2024-01-01" max="2024-01-31">
+
+            <input type="submit" id="availability" name="availability" value="Check availability">
+        </form>
 
         <?php
         //Selected dates
         if (isset($_SESSION['checkin'])) {
             $checkIn = $_SESSION['checkin'];
             $checkOut = $_SESSION['checkout'];
-            echo "Arrival date: " . $checkIn . "  |  Departure date: " . $checkOut;
+            echo "<br>Arrival date: " . $checkIn . "  |  Departure date: " . $checkOut;
         }
 
         //Get the chosen room's id
@@ -37,9 +45,11 @@ $db = connect('hotel.db');
         //Get info about chosen room from the rooms array
         foreach ($roomInfo as $rooms) {
             if ($rooms['id'] === $roomID) {
-                echo $rooms['name'];
+                echo "<br><br>" . $rooms['name'];
             }
         } ?>
+
+
 
 
         <!-- FORM FOR BOOKING -->

@@ -14,6 +14,34 @@ body {
   color: var(--text-color);
 }
 
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px 50px;
+}
+
+.logo {
+  width: 50px;
+  height: 50px;
+  background-color: white;
+}
+
+nav {
+  display: flex;
+  gap: 40px;
+}
+
+a {
+  color: var(--text-color);
+  text-decoration: none;
+}
+
+nav a {
+  font-weight: bold;
+  color: white;
+}
+
 main {
   display: flex;
   flex-direction: column;
@@ -58,11 +86,6 @@ h4 {
 .room-card:hover {
   transform: scale(1.05);
   cursor: pointer;
-}
-
-a {
-  color: var(--text-color);
-  text-decoration: none;
 }
 
 .room-card img {
