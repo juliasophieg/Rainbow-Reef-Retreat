@@ -1,5 +1,5 @@
 :root {
-  --text-color: #2e2e2e;
+  --almost-black: #2e2e2e;
   --coral: #ff9cba;
   --water: #6ac9de;
 }
@@ -9,9 +9,11 @@
 }
 
 body {
-  font-family: 'roboto';
-  background-color: rgb(127, 225, 255);
-  color: var(--text-color);
+  font-family: 'poppins';
+  background-image: url('/assets/images/backgroundimg.jpeg');
+  background-size: cover;
+  color: white;
+  margin: 0;
 }
 
 header {
@@ -33,22 +35,105 @@ nav {
 }
 
 a {
-  color: var(--text-color);
+  color: white;
   text-decoration: none;
 }
 
 nav a {
-  font-weight: bold;
-  color: white;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.intro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 130px;
+}
+
+h1 {
+  font-family: 'DM Serif Display';
+  font-size: 50px;
+  font-weight: 400;
+  margin: 0;
+}
+
+h2 {
+  font-weight: 300;
+  margin: 0;
 }
 
 main {
   display: flex;
   flex-direction: column;
-  margin: 50px;
+  margin: 40px 100px;
   padding: 50px;
   background-color: white;
+  color: var(--almost-black);
   border-radius: 15px;
+}
+
+/* Availability check*/
+
+form {
+  display: flex;
+  gap: 30px;
+  align-items: end;
+}
+
+.checkin-col,
+.checkout-col {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+label {
+  font-weight: 600;
+}
+
+input,
+button {
+  font-family: 'poppins';
+  font-size: 14px;
+  width: 190px;
+  height: 45px;
+  padding: 10px;
+}
+
+[type='date'] {
+  background: white
+    url(https://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/calendar_2.png)
+    97% 50% no-repeat;
+  border: 1px solid #c4c4c4;
+  border-radius: 5px;
+  background-color: white;
+
+  box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+[type='date']::-webkit-calendar-picker-indicator {
+  opacity: 0;
+}
+
+[type='date']::-webkit-calendar-picker-indicator:hover {
+  cursor: pointer;
+}
+
+button,
+input[type='submit'] {
+  background-color: var(--water);
+  color: white;
+  font-weight: 600;
+  border-radius: 10px;
+  border: none;
+  text-decoration: underline transparent;
+  transition: 0.2s ease-in-out;
+}
+
+input[type='submit']:hover {
+  cursor: pointer;
+  background-color: #4cb7cf;
 }
 
 /* FIRST PAGE */
@@ -71,9 +156,14 @@ h4 {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
-  margin-top: 30px;
-  gap: 60px;
+  flex-wrap: wrap;
+  margin-top: 50px;
+  gap: 80px;
   width: 100%;
+}
+
+.rooms-wrapper a {
+  color: var(--almost-black);
 }
 
 .room-card {
@@ -103,9 +193,73 @@ h4 {
 
 /* ROOM PAGE */
 
+.book {
+  display: block;
+}
+
 .guestname,
 .guesttcontact,
 .confirmation {
   display: flex;
   gap: 10px;
+}
+
+.features {
+  display: flex;
+  flex-direction: column;
+}
+
+.feature {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+input[type='checkbox'] {
+  height: 20px;
+  width: 20px;
+}
+
+.error {
+  color: red;
+}
+
+/* FOOTER */
+
+footer {
+  display: flex;
+  justify-content: space-between;
+  background-color: var(--water);
+  padding: 30px 50px;
+  margin-top: 180px;
+}
+
+.footer-column {
+  display: flex;
+  flex-direction: column;
+}
+
+footer h4 {
+  font-weight: 500;
+  font-size: 18px;
+  margin: 0;
+}
+
+.divider {
+  background-color: white;
+  height: 1px;
+  width: 70px;
+  margin: 5px 0px;
+}
+
+footer p,
+footer a {
+  margin: 5px 0px;
+  font-size: 14px;
+  text-decoration: underline transparent;
+  transition: 0.3s ease-in-out;
+}
+
+footer a:hover {
+  text-decoration: underline;
 }
