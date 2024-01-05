@@ -197,9 +197,7 @@ h4 {
   display: block;
 }
 
-.guestname,
-.guesttcontact,
-.confirmation {
+.form-div {
   display: flex;
   gap: 10px;
 }
@@ -221,7 +219,15 @@ input[type='checkbox'] {
 }
 
 .error {
+  width: 400px;
+  padding: 15px;
+  border-radius: 15px;
+  background-color: rgb(255, 194, 194);
   color: red;
+}
+
+.error p {
+  margin: 5px;
 }
 
 /* FOOTER */

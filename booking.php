@@ -1,9 +1,12 @@
 <?php
+
+declare(strict_types=1);
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
-require_once __DIR__ . '/hotelFunctions.php';
+require_once __DIR__ . '/codevalidation.php';
 $db = connect('hotel.db');
+
 
 //Get the chosen room's id
 $roomID = (int) $_GET['room_id'];
@@ -40,10 +43,8 @@ if (isset($_POST['book_room'])) {
     // Validate transfer code
     if (empty($guestCode)) {
         $errors[] = "Transfer code is required.";
-    } /*else {
-        // Check transfer code against database (pseudo-code)
+    }
 
-    }*/
 
     // If errors = 0, proceed with booking
     if (empty($errors)) {
@@ -78,56 +79,56 @@ if (isset($_POST['book_room'])) {
 }
 ?>
 
-<!-- ERROR MESSAGE(S) -->
-<div class="error">
-    <?php
-    if (isset($errors)) {
-        foreach ($errors as $error) { ?>
-            <li><?php echo $error; ?></li>
-    <?php }
-    }
-    ?>
-</div>
+<!-- PRESENTATION -->
 
-<!-- FORM FOR BOOKING -->
-
-<form class="book" action="" method="post">
-    <h4>Name</h4>
-    <div class="guesttname">
-        <input type="text" id="fullname" name="fullname" placeholder="Full name" value="<?php echo isset($guestName) ? $guestName : ''; ?>">
-    </div>
-    <h4>Contact information</h4>
-    <div class="guestcontact">
-        <input type="text" id="email" name="email" placeholder="E-mail" value="<?php echo isset($guestEmail) ? $guestEmail : ''; ?>">
-    </div>
-    <h4>Activity</h4>
-    <div class=" features">
+<!-- If any errors, display them here -->
+<?php if ($errors) { ?>
+    <div class="error">
+        <p>One or more required field(s) are missing:</p>
         <?php
-        //Generate list of features
-        $statement = $db->query("SELECT * FROM Features");
-        $features = $statement->fetchAll(PDO::FETCH_ASSOC);
-        foreach ($features as $feature) { ?>
-            <div class="feature">
-                <input type="checkbox" id="<?php echo $feature['feature_name']; ?>" name="feature" value="<?php echo $feature['feature_name']; ?>">
-                <label for="<?php echo $feature['feature_name']; ?>"><?php echo $feature['feature_name']; ?></label>
-            </div>
-        <?php } ?>
-    </div>
-
-
-    <h4>Confirmation</h4>
-    <?php //Total cost
-    foreach ($roomInfo as $rooms) {
-        if ($rooms['id'] === $roomId) {
-            $roomCost = $rooms['price_per_day'];
+        if (isset($errors)) {
+            foreach ($errors as $error) { ?>
+                <p><?php echo $error; ?></p>
+    <?php }
         }
     }
-    echo "Room: $" . $roomCost;
     ?>
-
-
-    <div class="confirmation">
-        <input type="text" id="transfercode" name="transfer_code" placeholder="Transfer code" value="<?php echo isset($guestCode) ? $guestCode : ''; ?>">
-        <input type="submit" id="book_room" name="book_room" value="Book room">
     </div>
-</form>
+
+    <!-- FORM FOR BOOKING -->
+
+    <form class="book" action="" method="post">
+        <h4>Name</h4>
+        <div class="form-div">
+            <input type="text" id="fullname" name="fullname" placeholder="Full name" value="<?php echo isset($guestName) ? $guestName : ''; ?>">
+        </div>
+        <h4>Contact information</h4>
+        <div class="form-div">
+            <input type="text" id="email" name="email" placeholder="E-mail" value="<?php echo isset($guestEmail) ? $guestEmail : ''; ?>">
+        </div>
+        <h4>Activity - optional</h4>
+        <div class="features">
+            <?php
+            //Generate list of features
+            $statement = $db->query("SELECT * FROM Features");
+            $features = $statement->fetchAll(PDO::FETCH_ASSOC);
+            foreach ($features as $feature) { ?>
+                <div class="feature">
+                    <input type="checkbox" id="<?php echo $feature['feature_name']; ?>" name="feature" value="<?php echo $feature['feature_name']; ?>">
+                    <label for="<?php echo $feature['feature_name']; ?>"><?php echo $feature['feature_name']; ?></label>
+                </div>
+            <?php } ?>
+        </div>
+        <h4>Total Cost</h4>
+        <div id="total_cost">Total:
+        </div>
+        <h4>Confirmation</h4>
+        <div class="form-div">
+            <input type="text" id="transfercode" name="transfer_code" placeholder="Transfer code" value="<?php echo isset($guestCode) ? $guestCode : ''; ?>">
+            <input type="submit" id="book_room" name="book_room" value="Book room">
+        </div>
+    </form>
+
+    <?php
+    require_once __DIR__ . '/totalcost.php';
+    ?>

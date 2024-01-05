@@ -2,26 +2,28 @@
 
 declare(strict_types=1);
 
-require 'vendor/autoload.php'; ?>
+//require_once __DIR__ . '/totalcost.php';
 
-<form action="/transfercodecheck.php" method="post">
+require 'vendor/autoload.php';
+
+/*<form action="/codevalidation.php" method="post">
 
     <input type="text" id="transfer_code" name="transfer_code" placeholder="Transfer code">
     <input type="text" id="total_cost" name="total_cost" placeholder="Total Cost">
     <input type="submit" id="check_code" name="check_code" value="Check code">
     </div>
-</form>
+</form>*/
 
-<?php
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 
-if (isset($_POST['check_code'])) {
+
+if (isset($_POST['book_room'])) {
     $baseUrl = 'https://www.yrgopelag.se/centralbank';
     $transferUrl = $baseUrl . '/transferCode';
     $transferCode = $_POST['transfer_code']; //Transfer code given by guest
-    $totalCost = $_POST['total_cost']; //Total cost for room and feature
+    $totalCost = $totalRoomCost; //Total cost for room and feature
 
     $client = new Client();
 
@@ -29,7 +31,7 @@ if (isset($_POST['check_code'])) {
         $response = $client->request('POST', $transferUrl, [
             'form_params' => [
                 'transferCode' => $transferCode,
-                'totalcost' => $totalCost
+                //               'totalcost' => $totalCost
             ],
         ]);
 
