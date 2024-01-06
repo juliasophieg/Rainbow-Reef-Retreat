@@ -15,6 +15,11 @@ $numberOfDays = $interval->days;
 
 $totalRoomCost = $numberOfDays * $roomCost;
 
+if (!empty($featureCost)) {
+    $totalCost = $totalRoomCost + $featureCost;
+} else {
+    $totalCost = $totalRoomCost;
+} //Total cost for room and feature
 
 ?>
 

@@ -4,7 +4,7 @@ declare(strict_types=1);
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
-require_once __DIR__ . '/codevalidation.php';
+
 $db = connect('hotel.db');
 
 
@@ -19,6 +19,22 @@ if (isset($_POST['book_room'])) {
     $guestName = htmlspecialchars($_POST['fullname']);
     $guestEmail = htmlspecialchars($_POST['email']);
     $guestCode = htmlspecialchars($_POST['transfer_code']);
+    // Retrieve selected features from the POST request
+    $selectedFeatures = $_POST['features'] ?? [];
+
+    // Process feature if selected
+    if (!empty($selectedFeatures)) {
+
+        foreach ($selectedFeatures as $feature) {
+            echo "Selected Feature: " . htmlspecialchars($feature) . "<br>";
+        }
+
+        //Getting cost of chosen feature
+        $statement = $db->query("SELECT extra_cost FROM Features where feature_name = '$feature'");
+        $featureCosts = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        $featureCost = $featureCosts[0]['extra_cost'];
+    }
 
     //Confirm that dates are picked
     if (isset($_SESSION['checkin'])) {
@@ -64,12 +80,13 @@ if (isset($_POST['book_room'])) {
         $guest_id = $db->lastInsertId();
 
         // Insert booking information into the Reservations table
-        $statement = "INSERT INTO Reservations (room_id, guest_id, arrival_date, departure_date) VALUES (?, ?, ?, ?)";
+        $statement = "INSERT INTO Reservations (room_id, guest_id, arrival_date, departure_date, total_cost) VALUES (?, ?, ?, ?, ?)";
         $stmt = $db->prepare($statement);
         $stmt->bindParam(1, $roomID, PDO::PARAM_INT);
         $stmt->bindParam(2, $guest_id, PDO::PARAM_INT);
         $stmt->bindParam(3, $checkIn, PDO::PARAM_STR);
         $stmt->bindParam(4, $checkOut, PDO::PARAM_STR);
+        $stmt->bindParam(5, $totalCost, PDO::PARAM_INT);
         $stmt->execute();
 
         $db->commit();  // Commit the transaction
@@ -82,7 +99,9 @@ if (isset($_POST['book_room'])) {
 <!-- PRESENTATION -->
 
 <!-- If any errors, display them here -->
-<?php if ($errors) { ?>
+<?php require_once __DIR__ . '/codevalidation.php';
+
+if ($errors) { ?>
     <div class="error">
         <p>One or more required field(s) are missing:</p>
         <?php
@@ -109,15 +128,16 @@ if (isset($_POST['book_room'])) {
         <h4>Activity - optional</h4>
         <div class="features">
             <?php
-            //Generate list of features
+            // Generate list of features
             $statement = $db->query("SELECT * FROM Features");
             $features = $statement->fetchAll(PDO::FETCH_ASSOC);
             foreach ($features as $feature) { ?>
                 <div class="feature">
-                    <input type="checkbox" id="<?php echo $feature['feature_name']; ?>" name="feature" value="<?php echo $feature['feature_name']; ?>">
+                    <input type="checkbox" id="<?php echo $feature['feature_name']; ?>" name="features[]" value="<?php echo $feature['feature_name']; ?>">
                     <label for="<?php echo $feature['feature_name']; ?>"><?php echo $feature['feature_name']; ?></label>
                 </div>
             <?php } ?>
+
         </div>
         <h4>Total Cost</h4>
         <div id="total_cost">Total:
