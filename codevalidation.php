@@ -13,7 +13,8 @@ use GuzzleHttp\Exception\RequestException;
 if (isset($_POST['book_room'])) {
     $baseUrl = 'https://www.yrgopelag.se/centralbank';
     $transferUrl = $baseUrl . '/transferCode';
-    $transferCode = $_POST['transfer_code']; //Transfer code given by guest
+    $_SESSION['transferCode'] = $_POST['transfer_code']; //Transfer code given by guest
+    $transferCode = $_SESSION['transferCode'];
 
     $client = new Client();
 
@@ -36,7 +37,7 @@ if (isset($_POST['book_room'])) {
         }
 
         if ($response->getStatusCode() == 200 && !isset($error) && $amount >= $totalCost) {
-            echo "Transfer ok";
+            require_once __DIR__ . '/transfer.php';
         } else {
             echo "Transfer of $" . $totalCost . " failed";
         }

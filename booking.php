@@ -86,7 +86,7 @@ if (isset($_POST['book_room'])) {
         $stmt->bindParam(2, $guest_id, PDO::PARAM_INT);
         $stmt->bindParam(3, $checkIn, PDO::PARAM_STR);
         $stmt->bindParam(4, $checkOut, PDO::PARAM_STR);
-        $stmt->bindParam(5, $totalCost, PDO::PARAM_INT);
+        $stmt->bindParam(5, $totalCost, PDO::PARAM_INT); //KOLLA UPP!
         $stmt->execute();
 
         $db->commit();  // Commit the transaction
@@ -99,7 +99,7 @@ if (isset($_POST['book_room'])) {
 <!-- PRESENTATION -->
 
 <!-- If any errors, display them here -->
-<?php require_once __DIR__ . '/codevalidation.php';
+<?php //require_once __DIR__ . '/codevalidation.php';
 
 if ($errors) { ?>
     <div class="error">
@@ -131,24 +131,34 @@ if ($errors) { ?>
             // Generate list of features
             $statement = $db->query("SELECT * FROM Features");
             $features = $statement->fetchAll(PDO::FETCH_ASSOC);
-            foreach ($features as $feature) { ?>
+            foreach ($features as $feature) {
+                // Check if feature is selected in order to save the checked feature if form submit fails
+                $isChecked = false;
+                if (!empty($selectedFeatures)) {
+                    if (in_array($feature['feature_name'], $selectedFeatures)) {
+                        $isChecked = true;
+                    }
+                }
+            ?>
                 <div class="feature">
-                    <input type="checkbox" id="<?php echo $feature['feature_name']; ?>" name="features[]" value="<?php echo $feature['feature_name']; ?>">
+                    <input type="checkbox" id="<?php echo $feature['feature_name']; ?>" name="features[]" value="<?php echo $feature['feature_name']; ?>" <?php if ($isChecked) echo "checked" ?>>
                     <label for="<?php echo $feature['feature_name']; ?>"><?php echo $feature['feature_name']; ?></label>
                 </div>
             <?php } ?>
+        </div>
 
-        </div>
-        <h4>Total Cost</h4>
-        <div id="total_cost">Total:
-        </div>
         <h4>Confirmation</h4>
         <div class="form-div">
             <input type="text" id="transfercode" name="transfer_code" placeholder="Transfer code" value="<?php echo isset($guestCode) ? $guestCode : ''; ?>">
             <input type="submit" id="book_room" name="book_room" value="Book room">
         </div>
+
+        <h4>Total Cost</h4>
+        <div id="total_cost">
+        </div>
     </form>
 
     <?php
     require_once __DIR__ . '/totalcost.php';
+    require_once __DIR__ . '/codevalidation.php';
     ?>

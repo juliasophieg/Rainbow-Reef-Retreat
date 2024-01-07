@@ -6,8 +6,8 @@ foreach ($roomInfo as $rooms) {
         $roomCost = $rooms['price_per_day'];
     }
 }
-// Room cost for whole stay
 
+// Room cost for whole stay
 $startDate = new DateTime($checkIn);
 $endDate = new DateTime($checkOut);
 $interval = $startDate->diff($endDate);
@@ -15,12 +15,12 @@ $numberOfDays = $interval->days;
 
 $totalRoomCost = $numberOfDays * $roomCost;
 
+//Total cost if feature is chosen
 if (!empty($featureCost)) {
     $totalCost = $totalRoomCost + $featureCost;
 } else {
     $totalCost = $totalRoomCost;
-} //Total cost for room and feature
-
+}
 ?>
 
 
@@ -32,7 +32,8 @@ if (!empty($featureCost)) {
     totalCostElement.textContent = "Total Cost: $" + totalCost;
 
     document.addEventListener("DOMContentLoaded", function() {
-        const features = <?php echo json_encode($features); ?>; // Converting PHP array to js object
+        // Converting PHP array to js object
+        const features = <?php echo json_encode($features); ?>;
 
         // Update total cost function
         function updateTotalCost() {
