@@ -1,8 +1,11 @@
 <?php
 
 declare(strict_types=1);
+
 session_start();
+
 require_once __DIR__ . '/hotelFunctions.php';
+
 $db = connect('hotel.db');
 
 //If "Check Availability" is pressed
@@ -16,50 +19,49 @@ if (isset($_POST['availability'])) {
     $checkOut = $_SESSION['checkout'];
 
 
-    //Check which rooms are available
-    // Retrieve available rooms
-    $statement = $db->query("SELECT * FROM Rooms");
+    //Check which rooms are booked on selected
+    $statement = $db->prepare("SELECT room_id FROM Reservations
+    WHERE arrival_date BETWEEN :checkIn AND :checkOut
+    OR departure_date BETWEEN :checkIn AND :checkOut;");
 
-    $rooms = $statement->fetchAll(PDO::FETCH_ASSOC);
+    $statement->execute(['checkIn' => $checkIn, 'checkOut' => $checkOut]);
 
+    $bookedRooms = $statement->fetchAll(PDO::FETCH_COLUMN);
 
-    //Generate room cards for available rooms
-    foreach ($rooms as $room) : ?>
-        <a href="room.php?room_id=<?php echo $room['id']; ?>&checkin=<?php echo $checkIn; ?>&checkout=<?php echo $checkOut; ?>">
-            <div class="room-card">
-                <img src="<?php echo $room['img_src'] ?>" style="width:100%">
-                <div class="room-card-text">
-                    <div class="room-title">
-                        <h3><?php echo $room['room_name'] ?></h3>
-                        <h3>$<?php echo $room['price_per_day'] ?></h3>
-                    </div>
-                    <p><?php echo ucfirst($room['room_type']) ?></p>
-                </div>
-            </div>
-        </a>
+    // All rooms
+    $allRooms = [1, 2, 3];
 
-    <?php endforeach;
+    // Available rooms
+    $availableRooms = array_diff($allRooms, $bookedRooms);
+
+    // Display available rooms
+    if (!empty($availableRooms)) {
+
+        //Get information about all rooms
+        require_once __DIR__ . '/rooms.php';
+
+        //Generate room cards for available rooms
+        foreach ($availableRooms as $availableRoom) {
+
+            foreach ($roomInfo as $room) :
+                if ($availableRoom === $room['id']) { ?>
+                    <a href="room.php?room_id=<?php echo $room['id']; ?>&checkin=<?php echo $checkIn; ?>&checkout=<?php echo $checkOut; ?>">
+                        <div class="room-card">
+                            <img src="<?php echo $room['room_img'] ?>" style="width:100%">
+                            <div class="room-card-text">
+                                <div class="room-title">
+                                    <h3><?php echo $room['name'] ?></h3>
+                                    <h3>$<?php echo $room['price_per_day'] ?></h3>
+                                </div>
+                                <p><?php echo ucfirst($room['type']) ?></p>
+                            </div>
+                        </div>
+                    </a>
+
+<?php }
+            endforeach;
+        };
+    }
 } else {
-    //Show all rooms if no dates are picked
-    $statement = $db->query("SELECT * FROM Rooms");
-
-    $rooms = $statement->fetchAll(PDO::FETCH_ASSOC);
-
-    //Generate room cards
-    foreach ($rooms as $room) : ?>
-        <a href="room.php?room_id=<?php echo $room['id']; ?>">
-            <div class="room-card">
-                <img src="<?php echo $room['img_src'] ?>" style="width:100%">
-                <div class="room-card-text">
-                    <div class="room-title">
-                        <h3><?php echo $room['room_name'] ?></h3>
-                        <h3>$<?php echo $room['price_per_day'] ?></h3>
-                    </div>
-                    <p><?php echo ucfirst($room['room_type']) ?></p>
-                </div>
-            </div>
-        </a>
-
-<?php endforeach;
+    echo "No rooms available for selected dates.";
 }
-?>

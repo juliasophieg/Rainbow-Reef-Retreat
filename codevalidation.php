@@ -37,9 +37,10 @@ if (isset($_POST['book_room'])) {
         }
 
         if ($response->getStatusCode() == 200 && !isset($error) && $amount >= $totalCost) {
+            $isValid = true;
             require_once __DIR__ . '/transfer.php';
         } else {
-            echo "Transfer of $" . $totalCost . " failed";
+            $isValid = false;
         }
     } catch (RequestException $e) {
         // Handle exceptions

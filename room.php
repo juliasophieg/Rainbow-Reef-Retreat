@@ -4,7 +4,6 @@ declare(strict_types=1);
 session_start();
 require_once __DIR__ . '/hotelFunctions.php';
 require_once __DIR__ . '/rooms.php';
-
 $db = connect('hotel.db');
 ?>
 
@@ -32,9 +31,11 @@ $db = connect('hotel.db');
             $checkIn = $_SESSION['checkin'];
             $checkOut = $_SESSION['checkout'];
             echo "<br>Arrival date: " . $checkIn . "  |  Departure date: " . $checkOut;
-        } ?>
+        }
 
-        <a href="/" style="color:var(--water);">Choose dates</a>
+        ?>
+
+        <a href="/" style="color:var(--water);">Change dates</a>
         <?php
         //Get the chosen room's id
         $roomId = (int) $_GET['room_id'];
