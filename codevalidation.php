@@ -7,7 +7,6 @@ require 'vendor/autoload.php';
 
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\RequestException;
 
 
 if (isset($_POST['book_room'])) {
@@ -18,32 +17,27 @@ if (isset($_POST['book_room'])) {
 
     $client = new Client();
 
-    try {
-        $response = $client->request('POST', $transferUrl, [
-            'form_params' => [
-                'transferCode' => $transferCode,
-                'totalcost' => $totalCost
-            ],
-        ]);
+    $response = $client->request('POST', $transferUrl, [
+        'form_params' => [
+            'transferCode' => $transferCode,
+            'totalcost' => $totalCost
+        ],
+    ]);
 
-        $data = json_decode($response->getBody()->getContents(), true);
-        if (isset($data['amount'])) {
-            $amount = $data['amount'];
-        }
-        if (isset($data['error'])) {
-            $error = $data['error'];
-        } else {
-            $error = null;
-        }
+    $responseData = json_decode($response->getBody()->getContents(), true);
+    if (isset($responseData['amount'])) {
+        $amount = $responseData['amount'];
+    }
+    if (isset($responseData['error'])) {
+        $error = $responseData['error'];
+    } else {
+        $error = null;
+    }
 
-        if ($response->getStatusCode() == 200 && !isset($error) && $amount >= $totalCost) {
-            $isValid = true;
-            require_once __DIR__ . '/transfer.php';
-        } else {
-            $isValid = false;
-        }
-    } catch (RequestException $e) {
-        // Handle exceptions
-        echo "Error: " . $e->getMessage();
+    if (!isset($error) && $amount == $totalCost) {
+        $isValid = true;
+        require_once __DIR__ . '/transfer.php';
+    } else {
+        $isValid = false;
     }
 }

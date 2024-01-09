@@ -46,7 +46,6 @@ if (isset($_POST['book_room'])) {
     if (!empty($selectedFeatures)) {
 
         foreach ($selectedFeatures as $feature) {
-            echo "Selected Feature: " . $feature . "<br>";
         }
 
         //Getting cost of chosen feature
@@ -123,45 +122,50 @@ if (isset($_POST['book_room'])) {
     <!-- FORM FOR BOOKING -->
 
     <form class="book" action="" method="post">
-        <h4>Name</h4>
-        <div class="form-div">
-            <input type="text" id="fullname" name="fullname" placeholder="Full name" value="<?php echo isset($guestName) ? $guestName : ''; ?>">
-        </div>
-        <h4>Contact information</h4>
-        <div class="form-div">
-            <input type="text" id="email" name="email" placeholder="E-mail" value="<?php echo isset($guestEmail) ? $guestEmail : ''; ?>">
-        </div>
-        <h4>Activity - optional</h4>
-        <div class="features">
-            <?php
-            // Generate list of features
-            $statement = $db->query("SELECT * FROM Features");
-            $features = $statement->fetchAll(PDO::FETCH_ASSOC);
-            foreach ($features as $feature) {
-                // Check if feature is selected in order to save the checked feature if form submit fails
-                $isChecked = false;
-                if (!empty($selectedFeatures)) {
-                    if (in_array($feature['feature_name'], $selectedFeatures)) {
-                        $isChecked = true;
+        <div class="form-container">
+            <h4>Activity - optional</h4>
+            <div class="features">
+                <?php
+                // Generate list of features
+                $statement = $db->query("SELECT * FROM Features");
+                $features = $statement->fetchAll(PDO::FETCH_ASSOC);
+                foreach ($features as $feature) {
+                    // Check if feature is selected in order to save the checked feature if form submit fails
+                    $isChecked = false;
+                    if (!empty($selectedFeatures)) {
+                        if (in_array($feature['feature_name'], $selectedFeatures)) {
+                            $isChecked = true;
+                        }
                     }
-                }
-            ?>
-                <div class="feature">
-                    <input type="checkbox" id="<?php echo $feature['feature_name']; ?>" name="features[]" value="<?php echo $feature['feature_name']; ?>" <?php if ($isChecked) echo "checked" ?>>
-                    <label for="<?php echo $feature['feature_name']; ?>"><?php echo $feature['feature_name']; ?></label>
-                </div>
-            <?php } ?>
+                ?>
+                    <div class="feature">
+                        <input type="checkbox" id="<?= $feature['feature_name']; ?>" name="features[]" value="<?= $feature['feature_name']; ?>">
+                        <label for="<?= $feature['feature_name']; ?>"><?= $feature['feature_name']; ?></label>
+                    </div>
+                <?php } ?>
+            </div>
+            <h4>Name</h4>
+            <div class="form-div">
+                <input type="text" id="fullname" name="fullname" placeholder="Full name" value="<?php echo isset($guestName) ? $guestName : ''; ?>">
+            </div>
+            <h4>Contact information</h4>
+            <div class="form-div">
+                <input type="text" id="email" name="email" placeholder="E-mail" value="<?php echo isset($guestEmail) ? $guestEmail : ''; ?>">
+            </div>
+
+
         </div>
 
-        <h4>Confirmation</h4>
-        <div class="form-div">
-            <input type="text" id="transfercode" name="transfer_code" placeholder="Transfer code" value="<?php echo isset($guestCode) ? $guestCode : ''; ?>">
-            <input type="submit" id="book_room" name="book_room" value="Book room">
+
+        <div class="form-container">
+            <h4>Confirmation</h4>
+            <div id="total_cost"></div>
+            <div class="form-div">
+                <input type="text" id="transfercode" name="transfer_code" placeholder="Transfer code" value="<?php echo isset($guestCode) ? $guestCode : ''; ?>">
+                <input type="submit" id="book_room" name="book_room" value="Book room">
+            </div>
         </div>
 
-        <h4>Total Cost</h4>
-        <div id="total_cost">
-        </div>
     </form>
 
     <?php

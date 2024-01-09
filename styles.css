@@ -9,6 +9,9 @@
 }
 
 body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   font-family: 'poppins';
   background-image: url('/assets/images/backgroundimg.jpeg');
   background-size: cover;
@@ -17,10 +20,11 @@ body {
 }
 
 header {
+  width: 100vw;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 20px 50px;
+  padding: 20px 50px;
 }
 
 .logo {
@@ -72,7 +76,8 @@ main {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 40px 150px;
+  width: 1000px;
+  margin: 40px 0px;
   padding: 50px;
   background-color: white;
   color: var(--almost-black);
@@ -81,7 +86,7 @@ main {
 
 /* Availability check*/
 
-form {
+.dates {
   display: flex;
   gap: 30px;
   align-items: end;
@@ -106,6 +111,15 @@ button {
   width: 190px;
   height: 45px;
   padding: 10px;
+}
+
+button {
+  background-color: var(--water) !important;
+}
+
+button:hover {
+  background-color: #32b6d4 !important;
+  cursor: pointer;
 }
 
 [type='date'] {
@@ -144,15 +158,6 @@ input[type='submit']:hover {
 }
 
 /* FIRST PAGE */
-
-.message {
-  width: 450px;
-  border-radius: 10px;
-  background-color: blanchedalmond;
-  color: rgb(205, 122, 33);
-  margin: 15px;
-  padding: 5px 20px;
-}
 
 h4 {
   margin: 10px 0px;
@@ -202,8 +207,93 @@ h4 {
 
 /* ROOM PAGE */
 
+.room-presentation {
+  display: flex;
+  justify-content: space-between;
+  gap: 70px;
+  width: 100%;
+}
+
+.room-presentation h2 {
+  font-family: 'DM Serif Display';
+  font-size: 36px;
+  color: var(--coral);
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 30px 0px;
+}
+
+li {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.room-images {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 20px;
+}
+
+.img-group {
+  display: flex;
+  gap: 20px;
+}
+.room-img-wide,
+.room-img-square {
+  background-color: grey;
+  border-radius: 15px;
+}
+
+.room-img-wide {
+  background-color: grey;
+  width: 450px;
+  height: 280px;
+}
+
+.room-img-square {
+  background-color: grey;
+  width: 215px;
+  height: 215px;
+}
+
+.room-images a {
+  color: var(--coral);
+  font-weight: 600;
+}
+
+/* Booking form */
+
+.booking-form {
+  width: 100%;
+  padding: 30px;
+  margin-top: 30px;
+  border: 1px solid #e1e1e1;
+  border-radius: 15px;
+}
+
+.booking-form h3 {
+  font-family: 'DM Serif Display';
+  font-size: 24px;
+  margin: 0;
+}
+
 .book {
-  display: block;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
 }
 
 .form-div {
@@ -220,6 +310,10 @@ h4 {
   display: flex;
   align-items: center;
   gap: 10px;
+}
+
+.feature label {
+  font-weight: 400;
 }
 
 input[type='checkbox'] {
@@ -242,6 +336,7 @@ input[type='checkbox'] {
 /* FOOTER */
 
 footer {
+  width: 100vw;
   display: flex;
   justify-content: space-between;
   background-color: var(--water);

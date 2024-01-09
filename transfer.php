@@ -20,13 +20,13 @@ $response = $client->request('POST', $url_deposit, [
     ],
 ]);
 
-$data = json_decode($response->getBody()->getContents(), true);
+$responseData = json_decode($response->getBody()->getContents(), true);
 
-if (isset($data['error'])) {
-    $error = $data['error'];
+if (isset($responseData['error'])) {
+    $error = $responseData['error'];
 }
-if (isset($data['message'])) {
-    $message = $data['message'];
+if (isset($responseData['message'])) {
+    $message = $responseData['message'];
 }
 
 if ($response->getStatusCode() == 200 && !isset($error)) {
