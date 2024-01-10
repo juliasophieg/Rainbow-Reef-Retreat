@@ -27,14 +27,11 @@ if (isset($_POST['book_room'])) {
         $errors[] = "You must choose dates";
     }
 
-    //Check if room is alreade booked on picked dates
-
-    // Get available rooms
+    //Check if room is already booked on picked dates
     $availableRooms = getAvailableRooms($checkIn, $checkOut);
     if (!in_array($roomID, $availableRooms)) {
         $errors[] = "The room is no longer available on the chosen dates.";
     }
-
 
     // Validating name
     if (empty($guestName)) {
@@ -51,14 +48,21 @@ if (isset($_POST['book_room'])) {
     // Process feature if selected
     if (!empty($selectedFeatures)) {
 
-        foreach ($selectedFeatures as $feature) {
+        $featureCost = 0;
+
+        // Iterate through selected features
+        foreach ($selectedFeatures as $featureName) {
+            // Fetch extra_cost from the database for the selected feature
+            $statement = $db->prepare("SELECT extra_cost FROM Features WHERE feature_name = :featureName");
+            $statement->execute(['featureName' => $featureName]);
+
+            $result = $statement->fetch(PDO::FETCH_ASSOC);
+
+            if ($result) {
+                // Add the extra_cost to the total cost
+                $featureCost += $result['extra_cost'];
+            }
         }
-
-        //Getting cost of chosen feature
-        $statement = $db->query("SELECT extra_cost FROM Features where feature_name = '$feature'");
-        $featureCosts = $statement->fetchAll(PDO::FETCH_ASSOC);
-
-        $featureCost = $featureCosts[0]['extra_cost'];
     }
 
     // Control if transfer code is submitted
@@ -68,42 +72,67 @@ if (isset($_POST['book_room'])) {
 
 
     // If errors = 0, Check if transfer code is valid
-    if (empty($errors)) {
+    if (empty($errors)) /*{
         //Transfer code validation
         require_once __DIR__ . '/codevalidation.php';
 
         if ($isValid === false) {
             echo "The submitted transfer code is not valid. Please control the code and amount.";
-        } elseif ($isValid === true) {
-            //If code is valid, continue with booking process
+        } elseif ($isValid === true) */ {
+        //If code is valid, continue with booking process
 
-            //Using transactions to ensure the right guest id is used
-            $db->beginTransaction();
+        //Using transactions to ensure the right guest id is used
+        $db->beginTransaction();
 
-            //Insert guest information into the Guest table
-            $statement = "INSERT INTO Guests (full_name, email) VALUES (?, ?)";
-            $stmt = $db->prepare($statement);
-            $stmt->bindParam(1, $guestName, PDO::PARAM_STR);
-            $stmt->bindParam(2, $guestEmail, PDO::PARAM_STR);
-            $stmt->execute();
+        include __DIR__ . '/totalcost.php';
 
-            // Retrieve the last inserted ID (guest_id)
-            $guest_id = $db->lastInsertId();
+        //Insert guest information into the Guest table
+        $statement = "INSERT INTO Guests (full_name, email) VALUES (?, ?)";
+        $stmt = $db->prepare($statement);
+        $stmt->bindParam(1, $guestName, PDO::PARAM_STR);
+        $stmt->bindParam(2, $guestEmail, PDO::PARAM_STR);
+        $stmt->execute();
 
-            // Insert booking information into the Reservations table
-            $statement = "INSERT INTO Reservations (room_id, guest_id, arrival_date, departure_date, total_cost) VALUES (?, ?, ?, ?, ?)";
-            $stmt = $db->prepare($statement);
-            $stmt->bindParam(1, $roomID, PDO::PARAM_INT);
-            $stmt->bindParam(2, $guest_id, PDO::PARAM_INT);
-            $stmt->bindParam(3, $checkIn, PDO::PARAM_STR);
-            $stmt->bindParam(4, $checkOut, PDO::PARAM_STR);
-            $stmt->bindParam(5, $totalCost, PDO::PARAM_INT); //KOLLA UPP!
-            $stmt->execute();
+        // Retrieve the last inserted ID (guest_id)
+        $guest_id = $db->lastInsertId();
 
-            $db->commit();  // Commit the transaction
-            echo "Thank you for choosing Rainbow Reef Retrat! Enjoy your stay";
-            session_unset();
+        // Insert booking information into the Reservations table
+        $statement = "INSERT INTO Reservations (room_id, guest_id, arrival_date, departure_date, total_cost) VALUES (?, ?, ?, ?, ?)";
+        $stmt = $db->prepare($statement);
+        $stmt->bindParam(1, $roomID, PDO::PARAM_INT);
+        $stmt->bindParam(2, $guest_id, PDO::PARAM_INT);
+        $stmt->bindParam(3, $checkIn, PDO::PARAM_STR);
+        $stmt->bindParam(4, $checkOut, PDO::PARAM_STR);
+        $stmt->bindParam(5, $totalCost, PDO::PARAM_INT); //KOLLA UPP!
+        $stmt->execute();
+
+
+
+        if ($selectedFeatures) {
+
+            // Retrieve the last inserted ID (reservations_id)
+            $reservation_id = $db->lastInsertId();
+
+            foreach ($selectedFeatures as $featureName) {
+
+                $statement = $db->prepare("SELECT id FROM Features WHERE feature_name = :featureName");
+                $statement->execute(['featureName' => $featureName]);
+
+                $result = $statement->fetch(PDO::FETCH_ASSOC);
+
+                $feature_id = $result['id'];
+
+                // Insert booking information into the Reservations table
+                $statement = "INSERT INTO reservation_features (reservation_id, feature_id) VALUES (?, ?)";
+                $stmt = $db->prepare($statement);
+                $stmt->bindParam(1, $reservation_id, PDO::PARAM_INT);
+                $stmt->bindParam(2, $feature_id, PDO::PARAM_INT);
+                $stmt->execute();
+            }
         }
+        $db->commit();  // Commit the transaction
+        echo "Thank you for choosing Rainbow Reef Retrat! Enjoy your stay";
+        session_unset();
     }
 }
 ?>
@@ -111,11 +140,10 @@ if (isset($_POST['book_room'])) {
 <!-- PRESENTATION -->
 
 <!-- If any errors, display them here -->
-
 <?php if ($errors) { ?>
     <script>
         window.onload = function() {
-            // Redirect the user to the error-anchor
+            // Redirect the user to the error-message
             window.location.href = "#error";
         };
     </script>
@@ -127,15 +155,13 @@ if (isset($_POST['book_room'])) {
                 <p><?php echo "- " . $error; ?></p>
     <?php }
         }
-    }
-    ?>
+    } ?>
     </div>
 
     <!-- FORM FOR BOOKING -->
 
     <form class="book" action="" method="post">
         <div class="form-container">
-
             <h4>Name</h4>
             <div class="form-div">
                 <input type="text" id="fullname" name="fullname" placeholder="Full name" value="<?php echo isset($guestName) ? $guestName : ''; ?>">
@@ -157,18 +183,14 @@ if (isset($_POST['book_room'])) {
                         if (in_array($feature['feature_name'], $selectedFeatures)) {
                             $isChecked = true;
                         }
-                    }
-                ?>
+                    } ?>
                     <div class="feature">
                         <input type="checkbox" id="<?= $feature['feature_name']; ?>" name="features[]" value="<?= $feature['feature_name']; ?>">
                         <label for="<?= $feature['feature_name']; ?>"><?= $feature['feature_name'] . " (+$" . $feature['extra_cost'] . ")"; ?></label>
                     </div>
                 <?php } ?>
             </div>
-
         </div>
-
-
         <div class="form-container">
             <h4>Confirmation</h4>
             <div id="total_cost"></div>
@@ -177,9 +199,6 @@ if (isset($_POST['book_room'])) {
                 <input type="submit" id="book_room" name="book_room" value="Book room">
             </div>
         </div>
-
     </form>
 
-    <?php
-    require_once __DIR__ . '/totalcost.php';
-    ?>
+    <?php include __DIR__ . '/totalcost.php'; ?>
