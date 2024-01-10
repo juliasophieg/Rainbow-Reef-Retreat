@@ -1,3 +1,23 @@
+<?php
+
+declare(strict_types=1);
+session_start();
+
+$checkIn = '';
+$checkOut = '';
+
+if (isset($_POST['availability'])) {
+
+    //Store picked dates in session variables
+    $_SESSION['checkin'] = $_POST['checkin'];
+    $_SESSION['checkout'] = $_POST['checkout'];
+}
+
+$checkIn = isset($_SESSION['checkin']) ? $_SESSION['checkin'] : '';
+$checkOut = isset($_SESSION['checkout']) ? $_SESSION['checkout'] : '';
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,37 +31,65 @@
 
 <body>
     <header>
-        <div class="logo"></div>
-        <nav>
-            <a href="/">The Island</a>
-            <a href="/">The Hotel</a>
-            <a href="/">Activities</a>
-            <a href="/">Contact</a>
-        </nav>
-    </header>
-    <div class="intro">
-        <h2>Welcome to</h2>
-        <h1>Rainbow Reef Retreat</h1>
-    </div>
-    <main>
-        <!--CHECK ROOM AVAILABILITY -->
-        <form class="dates" action="/" method="post" onsubmit="return validateDates()">
-            <div class="checkin-col">
-                <label for="checkin">Check in:</label>
-                <input type="date" id="checkin" name="checkin" min="2024-01-01" max="2024-01-31">
-            </div>
-            <div class="checkout-col">
-                <label for="checkout">Check out:</label>
-                <input type="date" id="checkout" name="checkout" min="2024-01-01" max="2024-01-31">
-            </div>
-            <input type="submit" id="availability" name="availability" value="Check availability">
-        </form>
-        <!-- IF NO DATES ARE PICKED, ALL ROOMS SHOW. IF DATES ARE PICKED ONLY AVAILABLE ROOMS SHOW -->
-        <div class="rooms-wrapper">
-            <?php require_once __DIR__ . '/availability.php'; ?>
+        <div class="navbar">
+            <div class="logo"></div>
+            <nav>
+                <a href="/">The Island</a>
+                <a href="/">The Hotel</a>
+                <a href="/">Activities</a>
+                <a href="/">Contact</a>
+            </nav>
         </div>
-
+        <div class="intro">
+            <h1>Rainbow Reef Retreat</h1>
+            <h2>⭑⭑</h2>
+        </div>
+    </header>
+    <main>
+        <section>
+            <!--CHECK ROOM AVAILABILITY -->
+            <form class="dates" action="/" method="post" onsubmit="return validateDates()">
+                <div class="checkin-col">
+                    <label for="checkin">Check in:</label>
+                    <input type="date" id="checkin" name="checkin" min="2024-01-01" max="2024-01-31" value="<?= htmlspecialchars($checkIn) ?>">
+                </div>
+                <div class=" checkout-col">
+                    <label for="checkout">Check out:</label>
+                    <input type="date" id="checkout" name="checkout" min="2024-01-01" max="2024-01-31" value="<?= htmlspecialchars($checkOut) ?>">
+                </div>
+                <input type="submit" id="availability" name="availability" value="Check availability">
+            </form>
+            <!-- PRESENT AVAILABLE ROOMS -->
+            <div class="rooms-wrapper">
+                <?php require_once __DIR__ . '/availability.php'; ?>
+            </div>
+        </section>
+        <div class="hotel-info">
+            <div class="left">
+                <h2>The Hotel</h2>
+                <p>Nestled on the pristine shores of a secluded island, Rainbow Reef Retreat invites you to experience a harmonious blend of luxury, serenity, and natural beauty. Surrounded by azure waters and lush tropical landscapes, our boutique hotel offers an idyllic sanctuary where you can relax, rejuvenate, and create cherished memories with your loved ones.</p>
+                <p>Discover a hidden gem where the rhythmic sounds of the waves lull you into a state of tranquility, and the gentle caress of the ocean breeze soothes your soul. </p>
+            </div>
+            <div class="right">
+                <h2>Additional Features</h2>
+                <p>At Rainbow Reef Retreat, we offer a curated selection of additional features and experiences to elevate your stay and immerse you in the natural beauty and excitement of our tropical paradise. </p>
+                <ul>
+                    <li>Wildlife Watching</li>
+                    <li>Lotus Spa</li>
+                    <li>Jet Ski Adventures</li>
+                </ul>
+            </div>
+        </div>
+        <div class="features-info">
+            <h2>Explore, Thrill, and Unwind: Additional Features</h2>
+            <div class="features-container">
+                <div class="features-div-one" id="one"></div>
+                <div class="features-div-two" id="two"></div>
+                <div class="features-div-three" id="three"></div>
+            </div>
+        </div>
     </main>
+
     <footer>
         <div class="footer-column">
             <h4>RAINBOW REEF RETREAT</h4>
@@ -81,7 +129,7 @@
             // Display error message
             alert('Please select both check-in and check-out dates.');
 
-            // Put focus on the first empty date field
+            // Focus on the first empty date field
             if (checkin === '') {
                 document.getElementById('checkin').focus();
             } else {

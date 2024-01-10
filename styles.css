@@ -8,18 +8,28 @@
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   display: flex;
   flex-direction: column;
   align-items: center;
   font-family: 'poppins';
-  background-image: url('/assets/images/backgroundimg.jpeg');
-  background-size: cover;
+  background-color: rgb(232, 253, 255);
   color: white;
   margin: 0;
 }
 
 header {
+  height: 500px;
+  background-image: url(assets/images/backgroundimage2.jpeg);
+  background-size: cover;
+  background-position: 0px -150px;
+}
+
+.navbar {
   width: 100vw;
   display: flex;
   justify-content: space-between;
@@ -30,7 +40,7 @@ header {
 .logo {
   width: 50px;
   height: 50px;
-  background-color: white;
+  background-color: rgb(185, 185, 185);
 }
 
 nav {
@@ -57,7 +67,7 @@ nav a {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 130px;
+  margin-top: 60px;
 }
 
 h1 {
@@ -68,7 +78,12 @@ h1 {
 }
 
 h2 {
+  font-family: 'DM Serif Display';
   font-weight: 300;
+  margin: 0;
+}
+
+h3 {
   margin: 0;
 }
 
@@ -76,19 +91,28 @@ main {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 1000px;
-  margin: 40px 0px;
+}
+
+section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 1100px;
   padding: 50px;
   background-color: white;
   color: var(--almost-black);
   border-radius: 15px;
+  box-shadow: 0px 4px 30px 0px rgba(0, 0, 0, 0.05);
+  position: relative;
+  top: -100px;
+  z-index: 2;
 }
 
 /* Availability check*/
 
 .dates {
   display: flex;
-  gap: 30px;
+  gap: 40px;
   align-items: end;
   justify-content: center;
 }
@@ -108,7 +132,7 @@ input,
 button {
   font-family: 'poppins';
   font-size: 14px;
-  width: 190px;
+  width: 210px;
   height: 45px;
   padding: 10px;
 }
@@ -160,14 +184,15 @@ input[type='submit']:hover {
 /* FIRST PAGE */
 
 h4 {
-  margin: 10px 0px;
+  margin: 20px 0px 10px 0px;
   font-weight: 700;
 }
 
 .rooms-wrapper {
   width: 90%;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
+  flex-direction: row;
   flex-wrap: wrap;
   margin: 50px;
   gap: 50px;
@@ -183,8 +208,9 @@ h4 {
 
 .room-card {
   display: flex;
-  height: 250px;
-  width: 100%;
+  flex-direction: column;
+  height: 300px;
+  width: 230px;
   border-radius: 15px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   transition: 0.3s;
@@ -196,16 +222,92 @@ h4 {
 }
 
 .room-card img {
-  max-width: 250px;
-  height: auto;
-  border-radius: 15px 0px 0px 15px;
+  height: 200px;
+  border-radius: 15px 15px 0px 0px;
 }
 
 .room-card-text {
-  width: 50%;
+  width: 100%;
+  padding: 15px 20px;
+}
+
+.room-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.room-title h3 {
+  color: var(--coral);
+}
+
+.hotel-info,
+.features-info {
+  display: flex;
+  justify-content: center;
+  background-color: white;
+  color: var(--almost-black);
+  width: 100vw;
+  height: 500px;
+  margin-bottom: 80px;
+  position: relative;
+  top: -150px;
+}
+
+.right ul li::before {
+  content: '\2022';
+  color: var(--coral);
+  font-weight: bold;
+  display: inline-block;
+  width: 1em;
+}
+
+.left,
+.right {
+  width: 650px;
+  padding: 150px 60px 60px 60px;
+}
+
+.features-info {
+  flex-direction: column;
+  align-items: center;
+}
+
+.features-container {
+  display: flex;
+  gap: 60px;
+}
+
+.features-div {
+  padding: 60px;
+}
+
+#one,
+#two,
+#three {
+  width: 300px;
+  height: 300px;
+  border-radius: 15px;
+  background-size: cover;
+}
+
+#one {
+  background-image: url(assets/images/wildlifewatch.jpeg);
+}
+
+#two {
+  background-image: url(assets/images/lotusspa.jpeg);
+}
+
+#three {
+  background-image: url(assets/images/jetski.jpeg);
 }
 
 /* ROOM PAGE */
+
+.room {
+  margin-top: 170px;
+}
 
 .room-presentation {
   display: flex;
@@ -215,7 +317,6 @@ h4 {
 }
 
 .room-presentation h2 {
-  font-family: 'DM Serif Display';
   font-size: 36px;
   color: var(--coral);
 }
@@ -244,22 +345,35 @@ li {
   display: flex;
   gap: 20px;
 }
-.room-img-wide,
-.room-img-square {
-  background-color: grey;
+
+.room-img-wide {
+  background-size: cover;
+  width: 400px;
+  height: 350px;
   border-radius: 15px;
 }
 
-.room-img-wide {
-  background-color: grey;
-  width: 450px;
-  height: 280px;
+.room-img-square-1,
+.room-img-square-2,
+.room-img-square-3 {
+  width: 120px;
+  height: 100px;
+  border-radius: 15px;
 }
 
-.room-img-square {
-  background-color: grey;
-  width: 215px;
-  height: 215px;
+.room-img-square-1 {
+  background-image: url(/assets/images/bathroom.jpeg);
+  background-size: cover;
+}
+
+.room-img-square-2 {
+  background-image: url(/assets/images/lotusspa.jpeg);
+  background-size: cover;
+}
+
+.room-img-square-3 {
+  background-image: url(/assets/images/wildlifewatch.jpeg);
+  background-size: cover;
 }
 
 .room-images a {
@@ -280,7 +394,6 @@ li {
 .booking-form h3 {
   font-family: 'DM Serif Display';
   font-size: 24px;
-  margin: 0;
 }
 
 .book {
@@ -322,7 +435,7 @@ input[type='checkbox'] {
 }
 
 .error {
-  width: 400px;
+  width: 500px;
   padding: 15px;
   border-radius: 15px;
   background-color: rgb(255, 194, 194);
@@ -341,7 +454,6 @@ footer {
   justify-content: space-between;
   background-color: var(--water);
   padding: 30px 50px;
-  margin-top: 180px;
 }
 
 .footer-column {
