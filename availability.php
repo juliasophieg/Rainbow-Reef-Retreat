@@ -2,37 +2,19 @@
 
 declare(strict_types=1);
 
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 
 require_once __DIR__ . '/hotelFunctions.php';
 
 $db = connect('hotel.db');
 
-//If "Check Availability" is pressed
-if (isset($_POST['availability'])) {
+//If dates are picked
+if (isset($checkIn) && isset($checkOut)) {
 
-    //Store picked dates in session variables
-    $_SESSION['checkin'] = $_POST['checkin'];
-    $_SESSION['checkout'] = $_POST['checkout'];
-
-    $checkIn = $_SESSION['checkin'];
-    $checkOut = $_SESSION['checkout'];
-
-
-    //Check which rooms are booked on selected
-    $statement = $db->prepare("SELECT room_id FROM Reservations
-    WHERE arrival_date BETWEEN :checkIn AND :checkOut
-    OR departure_date BETWEEN :checkIn AND :checkOut;");
-
-    $statement->execute(['checkIn' => $checkIn, 'checkOut' => $checkOut]);
-
-    $bookedRooms = $statement->fetchAll(PDO::FETCH_COLUMN);
-
-    // All rooms
-    $allRooms = [1, 2, 3];
-
-    // Available rooms
-    $availableRooms = array_diff($allRooms, $bookedRooms);
+    // Get available rooms function
+    $availableRooms = getAvailableRooms($checkIn, $checkOut);
 
     // Display available rooms
     if (!empty($availableRooms)) {
@@ -45,15 +27,15 @@ if (isset($_POST['availability'])) {
 
             foreach ($roomInfo as $room) :
                 if ($availableRoom === $room['id']) { ?>
-                    <a href="room.php?room_id=<?php echo $room['id']; ?>&checkin=<?php echo $checkIn; ?>&checkout=<?php echo $checkOut; ?>">
+                    <a href="room.php?room_id=<?= $room['id']; ?>&checkin=<?= $checkIn; ?>&checkout=<?= $checkOut; ?>">
                         <div class="room-card">
-                            <img src="<?php echo $room['room_img'] ?>" style="width:100%">
+                            <img src="<?= $room['room_img'] ?>" style="width:100%">
                             <div class="room-card-text">
+                                <h3><?= $room['name'] ?></h3>
                                 <div class="room-title">
-                                    <h3><?php echo $room['name'] ?></h3>
-                                    <h3>$<?php echo $room['price_per_day'] ?></h3>
+                                    <p><?= ucfirst($room['type']) ?></p>
+                                    <h3>$<?= $room['price_per_day'] ?></h3>
                                 </div>
-                                <p><?php echo ucfirst($room['type']) ?></p>
                             </div>
                         </div>
                     </a>
@@ -61,7 +43,7 @@ if (isset($_POST['availability'])) {
 <?php }
             endforeach;
         };
+    } else {
+        echo "Unfortunately there are no rooms available for selected dates. Please try other dates.";
     }
-} else {
-    echo "No rooms available for selected dates.";
 }

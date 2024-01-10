@@ -5,9 +5,6 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
-$db = connect('hotel.db');
-
-
 //Get the chosen room's id
 $roomID = (int) $_GET['room_id'];
 
@@ -29,6 +26,15 @@ if (isset($_POST['book_room'])) {
     } else {
         $errors[] = "You must choose dates";
     }
+
+    //Check if room is alreade booked on picked dates
+
+    // Get available rooms
+    $availableRooms = getAvailableRooms($checkIn, $checkOut);
+    if (!in_array($roomID, $availableRooms)) {
+        $errors[] = "The room is no longer available on the chosen dates.";
+    }
+
 
     // Validating name
     if (empty($guestName)) {
@@ -107,8 +113,14 @@ if (isset($_POST['book_room'])) {
 <!-- If any errors, display them here -->
 
 <?php if ($errors) { ?>
-    <div class="error">
-        <p><strong>One or more required field(s) are missing:</strong></p>
+    <script>
+        window.onload = function() {
+            // Redirect the user to the error-anchor
+            window.location.href = "#error";
+        };
+    </script>
+    <div id="error" class="error">
+        <p><strong>Oh no! There seems to be an issue:</strong></p>
         <?php
         if (isset($errors)) {
             foreach ($errors as $error) { ?>
@@ -123,7 +135,16 @@ if (isset($_POST['book_room'])) {
 
     <form class="book" action="" method="post">
         <div class="form-container">
-            <h4>Activity - optional</h4>
+
+            <h4>Name</h4>
+            <div class="form-div">
+                <input type="text" id="fullname" name="fullname" placeholder="Full name" value="<?php echo isset($guestName) ? $guestName : ''; ?>">
+            </div>
+            <h4>Contact information</h4>
+            <div class="form-div">
+                <input type="text" id="email" name="email" placeholder="E-mail" value="<?php echo isset($guestEmail) ? $guestEmail : ''; ?>">
+            </div>
+            <h4>Feature - optional</h4>
             <div class="features">
                 <?php
                 // Generate list of features
@@ -140,19 +161,10 @@ if (isset($_POST['book_room'])) {
                 ?>
                     <div class="feature">
                         <input type="checkbox" id="<?= $feature['feature_name']; ?>" name="features[]" value="<?= $feature['feature_name']; ?>">
-                        <label for="<?= $feature['feature_name']; ?>"><?= $feature['feature_name']; ?></label>
+                        <label for="<?= $feature['feature_name']; ?>"><?= $feature['feature_name'] . " (+$" . $feature['extra_cost'] . ")"; ?></label>
                     </div>
                 <?php } ?>
             </div>
-            <h4>Name</h4>
-            <div class="form-div">
-                <input type="text" id="fullname" name="fullname" placeholder="Full name" value="<?php echo isset($guestName) ? $guestName : ''; ?>">
-            </div>
-            <h4>Contact information</h4>
-            <div class="form-div">
-                <input type="text" id="email" name="email" placeholder="E-mail" value="<?php echo isset($guestEmail) ? $guestEmail : ''; ?>">
-            </div>
-
 
         </div>
 

@@ -50,3 +50,22 @@ function isValidUuid(string $uuid): bool
     }
     return true;
 }
+
+function getAvailableRooms(string $checkIn, string $checkOut): array
+{
+    $db = connect('hotel.db');
+    $statement = $db->prepare("SELECT room_id FROM Reservations
+    WHERE departure_date >= :checkIn AND arrival_date <= :checkOut;");
+
+    $statement->execute(['checkIn' => $checkIn, 'checkOut' => $checkOut]);
+
+    $bookedRooms = $statement->fetchAll(PDO::FETCH_COLUMN);
+
+    // All rooms
+    $allRooms = [1, 2, 3];
+
+    // Available rooms
+    $availableRooms = array_diff($allRooms, $bookedRooms);
+
+    return $availableRooms;
+}
