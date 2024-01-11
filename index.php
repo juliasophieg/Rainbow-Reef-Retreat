@@ -69,23 +69,28 @@ $checkOut = isset($_SESSION['checkout']) ? $_SESSION['checkout'] : '';
                 <h2>The Hotel</h2>
                 <p>Nestled on the pristine shores of a secluded island, Rainbow Reef Retreat invites you to experience a harmonious blend of luxury, serenity, and natural beauty. Surrounded by azure waters and lush tropical landscapes, our boutique hotel offers an idyllic sanctuary where you can relax, rejuvenate, and create cherished memories with your loved ones.</p>
                 <p>Discover a hidden gem where the rhythmic sounds of the waves lull you into a state of tranquility, and the gentle caress of the ocean breeze soothes your soul. </p>
+                <div class="stars">
+                    <h1>⭑ ⭑</h1>
+                </div>
             </div>
             <div class="right">
                 <h2>Additional Features</h2>
-                <p>At Rainbow Reef Retreat, we offer a curated selection of additional features and experiences to elevate your stay and immerse you in the natural beauty and excitement of our tropical paradise. </p>
-                <ul>
-                    <li>Wildlife Watching</li>
-                    <li>Lotus Spa</li>
-                    <li>Jet Ski Adventures</li>
-                </ul>
-            </div>
-        </div>
-        <div class="features-info">
-            <h2>Explore, Thrill, and Unwind: Additional Features</h2>
-            <div class="features-container">
-                <div class="features-div-one" id="one"></div>
-                <div class="features-div-two" id="two"></div>
-                <div class="features-div-three" id="three"></div>
+                <p>We offer a curated selection of additional features and experiences to elevate your stay. From thrilling adventures on the water to serene moments of relaxation and rejuvenation.</p>
+                <p>Discover the extraordinary experiences that await you at our exclusive retreat.</p>
+                <div class="features-container">
+                    <div class="features-div">
+                        <div class="features-img" id="one"></div>
+                        <h5>Wildlife Watching</h5>
+                    </div>
+                    <div class="features-div">
+                        <div class="features-img" id="two"></div>
+                        <h5>Lotus Spa</h5>
+                    </div>
+                    <div class="features-div">
+                        <div class="features-img" id="three"></div>
+                        <h5>Jet Ski Adventures</h5>
+                    </div>
+                </div>
             </div>
         </div>
     </main>
