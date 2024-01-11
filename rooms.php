@@ -41,12 +41,3 @@ $roomInfo = [
     ],
 
 ];
-
-
-// Get info about room
-/*foreach ($roomInfo as $rooms) {
-    if ($rooms['id'] === 1) {
-        echo $rooms['name'];
-        echo ", " . $rooms['price_per_day'];
-    }
-}*/

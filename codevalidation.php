@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/totalcost.php'; //Get $totalCost (room + feature)
+
 require 'vendor/autoload.php';
 
 

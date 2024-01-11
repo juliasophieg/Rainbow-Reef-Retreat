@@ -17,10 +17,11 @@ $totalRoomCost = $numberOfDays * $roomCost;
 
 //Total cost if feature is chosen
 if (!empty($featureCost)) {
-    $totalCost = $totalRoomCost + $featureCost;
+    $_SESSION['total_cost'] = $totalRoomCost + $featureCost;
 } else {
-    $totalCost = $totalRoomCost;
+    $_SESSION['total_cost'] = $totalRoomCost;
 }
+$totalCost = $_SESSION['total_cost'];
 ?>
 
 

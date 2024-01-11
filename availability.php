@@ -7,7 +7,6 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 
 require_once __DIR__ . '/hotelFunctions.php';
-
 $db = connect('hotel.db');
 
 //If dates are picked
@@ -39,11 +38,10 @@ if (isset($checkIn) && isset($checkOut)) {
                             </div>
                         </div>
                     </a>
-
-<?php }
+        <?php }
             endforeach;
         };
-    } else {
-        echo "Unfortunately there are no rooms available for selected dates. Please try other dates.";
-    }
+    } else { ?>
+        <p>Unfortunately there are no rooms available for the selected dates. Please try other dates.</p>
+<?php }
 }

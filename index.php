@@ -47,15 +47,15 @@ $checkOut = isset($_SESSION['checkout']) ? $_SESSION['checkout'] : '';
     </header>
     <main>
         <section>
-            <!--CHECK ROOM AVAILABILITY -->
+            <!--PICK DATES -->
             <form class="dates" action="/" method="post" onsubmit="return validateDates()">
                 <div class="checkin-col">
                     <label for="checkin">Check in:</label>
-                    <input type="date" id="checkin" name="checkin" min="2024-01-01" max="2024-01-31" value="<?= htmlspecialchars($checkIn) ?>">
+                    <input type="date" id="checkin" name="checkin" min="2024-01-01" max="2024-01-31" value="<?= $checkIn ?>">
                 </div>
                 <div class=" checkout-col">
                     <label for="checkout">Check out:</label>
-                    <input type="date" id="checkout" name="checkout" min="2024-01-01" max="2024-01-31" value="<?= htmlspecialchars($checkOut) ?>">
+                    <input type="date" id="checkout" name="checkout" min="2024-01-01" max="2024-01-31" value="<?= $checkOut ?>">
                 </div>
                 <input type="submit" id="availability" name="availability" value="Check availability">
             </form>
@@ -94,7 +94,6 @@ $checkOut = isset($_SESSION['checkout']) ? $_SESSION['checkout'] : '';
             </div>
         </div>
     </main>
-
     <footer>
         <div class="footer-column">
             <h4>RAINBOW REEF RETREAT</h4>
@@ -119,47 +118,48 @@ $checkOut = isset($_SESSION['checkout']) ? $_SESSION['checkout'] : '';
             <a href="/">FAQ</a>
             <a href="/">Booking policy</a>
         </div>
-
     </footer>
-</body>
 
-<script>
-    function validateDates() {
-        // Get the checkin and checkout dates
-        const checkin = document.getElementById('checkin').value;
-        const checkout = document.getElementById('checkout').value;
+    <script>
+        function validateDates() {
+            // Get the checkin and checkout dates
+            const checkin = document.getElementById('checkin').value;
+            const checkout = document.getElementById('checkout').value;
 
-        // Check if any of them are empty
-        if (checkin === '' || checkout === '') {
-            // Display error message
-            alert('Please select both check-in and check-out dates.');
+            // Check if any of them are empty
+            if (checkin === '' || checkout === '') {
+                // Display error message
+                alert('Please select both check-in and check-out dates.');
 
-            // Focus on the first empty date field
-            if (checkin === '') {
-                document.getElementById('checkin').focus();
-            } else {
-                document.getElementById('checkout').focus();
+                // Focus on the first empty date field
+                if (checkin === '') {
+                    document.getElementById('checkin').focus();
+                } else {
+                    document.getElementById('checkout').focus();
+                }
+
+                // Prevent form submission
+                return false;
             }
 
-            // Prevent form submission
-            return false;
+            // Check if checkin date is after checkout date
+            if (checkin >= checkout) {
+                // Display error message
+                alert('Check-out date must be after check-in date.');
+
+                // Focus on the checkout date field
+                document.getElementById('checkout').focus();
+
+                // Prevent form submission
+                return false;
+            }
+
+            // Continue with form submission
+            return true;
         }
+    </script>
+</body>
 
-        // Check if checkin date is after checkout date
-        if (checkin >= checkout) {
-            // Display error message
-            alert('Check-out date must be after check-in date.');
 
-            // Focus on the checkout date field
-            document.getElementById('checkout').focus();
-
-            // Prevent form submission
-            return false;
-        }
-
-        // Continue with form submission
-        return true;
-    }
-</script>
 
 </html>
