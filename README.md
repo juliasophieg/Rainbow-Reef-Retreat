@@ -1,5 +1,3 @@
-WHY NOT A GIF HERE? TO SET THE MOOD.
-
 https://juliaju.se/Rainbow-Reef-Retreat/
 
 # Rainbow Reef
@@ -18,8 +16,6 @@ It is also possible to aff features such att Wildlife Watching, Lotus Spa and Je
 
 
 # Instructions
-
-No installations are required.
 
 The database is built by five tables (Rooms, Features, Guests, Reservations and Reservation_features).
 - Rooms: id, room_name, price_per_day, img_src, room_type
