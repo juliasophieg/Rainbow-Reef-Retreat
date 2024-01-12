@@ -1,5 +1,7 @@
 WHY NOT A GIF HERE? TO SET THE MOOD.
 
+https://juliaju.se/Rainbow-Reef-Retreat/
+
 # Rainbow Reef
 
 Nestled in the heart of the crystal-clear waters of the Pacific Ocean, Rainbow Reef is a dazzling jewel among tropical islands. Located in a remote and untouched corner of the world, this pristine paradise is renowned for its vibrant underwater world and breathtaking coral formations.
