@@ -10,6 +10,12 @@ Nestled in the heart of the crystal-clear waters of the Pacific Ocean, Rainbow R
 
 Welcome to Rainbow Reef Retreat, an exclusive haven nestled on the shores of the enchanting tropical island, offering a luxurious escape where paradise meets unparalleled hospitality. Located on the edge of the pristine Rainbow Reef, our resort is a seamless blend of opulence and natural beauty.
 
+The hotel has three rooms: Lagoon Loft (budget), Turtle Terrace (standard) and Coral Suite (luxury).
+
+The hotel offers 30% off on all stays longer than three days.
+
+It is also possible to aff features such att Wildlife Watching, Lotus Spa and Jet Ski Adventures!
+
 
 # Instructions
 
