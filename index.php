@@ -61,7 +61,8 @@ $checkOut = isset($_SESSION['checkout']) ? $_SESSION['checkout'] : '';
             </form>
             <!-- PRESENT AVAILABLE ROOMS -->
             <div class="rooms-wrapper">
-                <?php require_once __DIR__ . '/availability.php'; ?>
+                <?php if(isset($_POST['availability'])){
+                require_once __DIR__ . '/availability.php';} ?>
             </div>
         </section>
         <div class="hotel-info">
