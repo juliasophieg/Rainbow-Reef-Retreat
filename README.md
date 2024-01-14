@@ -26,13 +26,32 @@ The database is built by five tables (Rooms, Features, Guests, Reservations and 
 
 # Code review
 
-1. example.js:10-15 - Remember to think about X and this could be refactored using the amazing Y function.
-2. example.js:10-15 - Remember to think about X and this could be refactored using the amazing Y function.
-3. example.js:10-15 - Remember to think about X and this could be refactored using the amazing Y function.
-4. example.js:10-15 - Remember to think about X and this could be refactored using the amazing Y function.
-5. example.js:10-15 - Remember to think about X and this could be refactored using the amazing Y function.
-6. example.js:10-15 - Remember to think about X and this could be refactored using the amazing Y function.
-7. example.js:10-15 - Remember to think about X and this could be refactored using the amazing Y function.
-8. example.js:10-15 - Remember to think about X and this could be refactored using the amazing Y function.
-9. example.js:10-15 - Remember to think about X and this could be refactored using the amazing Y function.
-10. example.js:10-15 - Remember to think about X and this could be refactored using the amazing Y function.
+Good job!
+
+Keep in mind when reading trough my feedback that I learned a lot form looking trough your code and a lot of the feedback I’m giving I didn’t even implement myself. I’m definitely going back to my own project and change up some stuff.
+
+Overall really really clean code and a tidy project. You’re going to be an excellent developer. I had to work hard to find something to give feedback on. First of all:
+
+Neat with all functions in one file
+I liked the array_diff solutions! Didn’t know about that one.
+Good looking website with a clean interface and consistent margins and padding that makes the feel of the site calm and trustworthy.
+
+1. Keep session start and if isset in index.php in a separate file and keep index.php clean, only requiring other files.
+
+2. In hotelFunctions.php it would have been nice for the $allRooms on line 65 to be called their string name just for clarity. Then later in the code translate those string to their respective ID:s.
+
+3. In rooms.php half of the data in $roomInfo is fetched from the database and the rest is hardcoded. Try keep everything in the database to have better control and make it easier to update trough an admin page for example. 
+
+4. Create one script.js file instead of having small snippets of javascript spread out in the project. 
+
+5. Change the filenames of room.php and rooms.php to something a bit more descriptive. Right now they are a bit so similar. roominfo.php and roompage.php for example.
+
+6. Create a separate file for footer and header and require them to not repeat yourself. Separate html and php as much as possible.
+
+7. Im not sure about this one but Is it necessary to check the dates availability several times? I see the dates availability is checked repeatedly over project. Maybe theres a smarter solutions to keep the dates occupied. Try keep code DRY.
+
+8. Not really a coding feedback but from a UX perspective the solution to check availability isn’t ideal. It would be nice with some visual feedback to make a decision based on what dates are available directly instead of trying out different dates. For example put some css-classes on dates that are already booked in the calendar. But again, not a coding problem.
+
+9. The check for empty form fields in booking.php could be a function.
+
+10. This is far fetched but a few more comments in the code to explain certain parts.
