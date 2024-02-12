@@ -2,10 +2,6 @@
 
 declare(strict_types=1);
 
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
-
 require_once __DIR__ . '/hotelFunctions.php';
 $db = connect('hotel.db');
 
@@ -26,7 +22,7 @@ if (isset($checkIn) && isset($checkOut)) {
 
             foreach ($roomInfo as $room) :
                 if ($availableRoom === $room['id']) { ?>
-                    <a href="room.php?room_id=<?= $room['id']; ?>&checkin=<?= $checkIn; ?>&checkout=<?= $checkOut; ?>">
+                    <a href="room.php?room_id=<?= $room['id']; ?>">
                         <div class="room-card">
                             <img src="<?= $room['room_img'] ?>" style="width:100%">
                             <div class="room-card-text">

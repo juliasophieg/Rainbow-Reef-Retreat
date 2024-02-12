@@ -69,3 +69,12 @@ function getAvailableRooms(string $checkIn, string $checkOut): array
 
     return $availableRooms;
 }
+
+function getFeatures(): array
+{
+    $db = connect('hotel.db');
+    $statement = $db->query("SELECT * FROM Features");
+    $features = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+    return $features;
+}

@@ -15,6 +15,15 @@ $numberOfDays = $interval->days;
 
 $totalRoomCost = $numberOfDays * $roomCost;
 
+//30% discount if stay is longer than 3 days
+
+$discount = 0;
+
+if ($numberOfDays >= 1) {
+    $discount = round($totalRoomCost * 0.5);
+    $totalRoomCost = round($totalRoomCost * 0.5);
+}
+
 //Total cost if feature is chosen
 if (!empty($featureCost)) {
     $_SESSION['total_cost'] = $totalRoomCost + $featureCost;
@@ -24,16 +33,17 @@ if (!empty($featureCost)) {
 $totalCost = $_SESSION['total_cost'];
 ?>
 
-
 <script>
-    //Show feature and total cost depending on checkboxes. Room cost by default.
-
+    //Show feature and total cost depending on checkboxes. Room cost and discount by default.
     const totalCostElement = document.getElementById("total_cost");
     let totalCost = <?php echo json_encode($totalRoomCost); ?>;
-    totalCostElement.textContent = "Total Cost: $" + totalCost;
+    const discountElement = document.getElementById("discount");
+    let discount = <?php echo json_encode($discount); ?>;
+    totalCostElement.textContent = "Total Cost: $" + totalCost.toFixed(2);
+    discountElement.textContent = "Discount: -$" + discount.toFixed(2);
+
 
     document.addEventListener("DOMContentLoaded", function() {
-        // Converting PHP array to js object
         const features = <?php echo json_encode($features); ?>;
 
         // Update total cost function
